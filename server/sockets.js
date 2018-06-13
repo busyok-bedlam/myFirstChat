@@ -10,6 +10,12 @@ const socketIo = io => {
                 content,
                 username: socket.id
             }
+            MessageModel.create(data, (err,result) => {
+                console.log(result);
+                if(err){
+                    console.error("Message ERROR",err)
+                }
+            })
             socket.emit("SEND_MESSAGE_TO_CLIENT", data);
             socket.to("GENERAL_ROOM").emit("SEND_MESSAGE_TO_CLIENT", data);
         })
