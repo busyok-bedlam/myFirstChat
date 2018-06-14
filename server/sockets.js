@@ -19,6 +19,20 @@ const socketIo = io => {
             socket.emit("SEND_MESSAGE_TO_CLIENT", data);
             socket.to("GENERAL_ROOM").emit("SEND_MESSAGE_TO_CLIENT", data);
         })
+        socket.on("receiveHistory", () => {
+            MessageModel
+                .find({})
+                .sort({ date: -1 })
+                .limit(50)
+                .sort({ date: 1})
+                .lean()
+                .exec( (err,messages) => {
+                    if(!err){
+                        socket.emit('history',messages);
+                        socket.to('GENERAL_ROOM').emit('history', messages)
+                    }
+                })
+        })
         socket.on('disconnect', () => {
             console.log("DISCONNECT SOCKET FROM SERVER")
         })

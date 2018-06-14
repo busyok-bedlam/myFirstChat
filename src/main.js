@@ -33,9 +33,19 @@ const addListItem = data => {
     input.value = ""
 }
 
-socket.on('connect', () => {
-    console.log('CONNECTED SOCKET ON CLIENT')
+socket.on('connect', msg => {
+    console.log(msg)
+    console.log('CONNECTED SOCKET ON CLIENT');
+    socket.emit('receiveHistory');
+
 })
+socket.on('history', messages => {
+    for(let message of messages){
+        addListItem(message);
+    }
+})
+
+
 
 socket.on('disconnect', function(){
     console.log("DISCONNECTED SOCKET FROM CLIENT")
