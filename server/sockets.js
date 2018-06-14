@@ -29,7 +29,6 @@ const socketIo = io => {
                 .exec( (err,messages) => {
                     if(!err){
                         socket.emit('history',messages);
-                        socket.to('GENERAL_ROOM').emit('history', messages)
                     }
                 })
         })
